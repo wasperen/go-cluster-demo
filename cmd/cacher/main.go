@@ -14,11 +14,16 @@ func becomeMember(list *memberlist.Memberlist, knownHosts []string) error {
 	fmt.Printf("joining list via known member(s) %s\n", knownHosts)
 
 	var err error
+	var nrMembers int
+
 	for retry := uint8(0); retry < retries; retry++ {
-		_, err = list.Join(knownHosts)
-		if err != nil {
+		fmt.Printf("- becoming member, try %d\n", retry)
+		nrMembers, err = list.Join(knownHosts)
+		if err == nil {
+			fmt.Printf("connected with %d members\n", nrMembers)
 			return nil
 		}
+		fmt.Printf(" -- no member yet with error %s\n", err.Error())
 		time.Sleep(time.Second * 1)
 	}
 	return err
