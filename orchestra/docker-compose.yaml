@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  cacher:
+    build: .
+    image: go-cluster-demo
+    hostname: cacher
+    command: cacher_1 cacher_2 cacher_3
+    deploy:
+      mode: replicated
+      replicas: 3
